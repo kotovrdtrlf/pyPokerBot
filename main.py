@@ -2,7 +2,7 @@ import random
 
 
 def main():
-    class Card( object) :
+    class Card(object) :
         def __init__(self, face, value, suit):
             self.face = face
             self.value = value
@@ -10,7 +10,7 @@ def main():
         def __repr__(self):
             return str(self.face) + " of " + self.suit 
 
-    class Deck( list ):
+    class Deck(list):
         def __init__(self):
             suits = ["Hearts", "Spades", "Diamonds", "Clubs"]
             values = {
@@ -40,6 +40,9 @@ def main():
 
         def deal(self):
             return self.pop()
+
+        def burn(self):
+            self.pop()
     
     class Player(object):
         def __init__(self, name):
@@ -55,13 +58,51 @@ def main():
             for card in self.hand:
                 print(card)
 
+    class Table(object):
+        def __init__(self, players):
+            self.tableCards = []
+            self.players = players
+
+        def showTable(self):
+            tableStr = ""
+            for card in self.tableCards:
+                tableStr += str(card) + ", "
+            print(tableStr)
+
+        def flop(self, deck):
+            print("Burning the first card...")
+            deck.burn()
+            print("Flopping three cards...")
+            for i in range(3):
+                self.tableCards.append(deck.deal())
+            self.showTable()
+
+        def turn(self, deck):
+            print("Burning the first card...")
+            deck.burn()
+            print("Drawing turn...")
+            self.tableCards.append(deck.deal())
+            self.showTable()
+
+        def river(self, deck):
+            print("Burning the first card...")
+            deck.burn()
+            print("Drawing river...")
+            self.tableCards.append(deck.deal())
+            self.showTable()
+            
+    #class handAsessor(object):
+
+
+
     
     deck = Deck()
+    table = Table([1,2,3,4])
     deck.shuffle()
-    stanislav = Player("Stasyan")
-    stanislav.draw(deck)
-    stanislav.draw(deck)
-    stanislav.showHand()
+    table.flop(deck)
+    table.turn(deck)
+    table.river(deck)
+    
     
     
 
